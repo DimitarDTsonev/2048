@@ -84,8 +84,10 @@ void Game2048::printAll() const {
 	std::cout << std::setw(85) << "Max:" << max << "     " << "Score:" << score << std::endl;
 }
 
-// randomNumber gets a parameter which is the count of the random numbers to place on the free spaces on the grid. 
-// The function finds an empty space on the grid and add a number(2 or 4) randomly generated
+// randomNumber() gets a parameter which is the count of the random numbers
+// to place on the free spaces on the grid. 
+// The function finds an empty space on the grid and add a number(2 or 4)
+// randomly generated
 void Game2048::randomNumber(int countOfNumsToPlace) {
 	while (countOfNumsToPlace) {
 		short randRow = rand() % 4;
@@ -247,16 +249,17 @@ void Game2048::moveRight() {
 	}
 }
 
-// Helper functions to get is there more empty space on the grid and if the player have the number 2048
+// Helper functions to get is there more empty space on the grid 
+// and if the player have the number 2048
 bool Game2048::isGameOver() const {
 	for (int i = 0; i < GRID_SIZE; i++) {
 		for (int j = 0; j < GRID_SIZE; j++) {
 			if (visibility[i][j] == 0) {
-				return false;				// Continue the game
+				return false;			// Continue the game
 			}
 		}
 	}
-	return true;							// Break the game
+	return true;						// Break the game
 }
 
 bool Game2048::getResult() const {
