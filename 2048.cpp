@@ -13,7 +13,9 @@ Game2048::Game2048() : max(0), score(0) {
 	randomNumber(2);
 }
 
-// That is the function that executes the game. The function first print the grid. After that there is a loop   
+// That is the function that executes the game. 
+// The function first print the grid. 
+// After that there is a loop   
 void Game2048::start() {
 	printAll();
 
@@ -40,10 +42,10 @@ void Game2048::start() {
 		case 77:
 			moveRight();
 			break;
-		case 27:							// Stops the game
+		case 27:		// Stops the game
 			return;
-		default:
-			continue;						// Ignore invalid keys
+		default:		
+			continue;	// Ignore invalid keys
 		}
 
 		randomNumber(1);
