@@ -1,5 +1,5 @@
 # 2048
 Puzzle game where players combine numbered tiles on a grid to reach the elusive 2048.
 
-# Brief description of the game works: 
+# Brief description of how the game works: 
 The goal of 2048 is to combine numbered 4x4 grid to get the number 2048 in a single sell of the grid. The game begins with two numbers randomly placed on the grid, each with a value of either 2 or 4. Use the arrow keys (up, down, left, right), or the symbols ('a', 'w', 's', 'd')  to slide all the numbers on the grid in one direction. When two numbers touch, they merge into one number with a value equal to the sum of the two numbers. The player lose the game if he try to slide the grid but there are no more empty spaces(the one that has 0 in them), or execute a move that do nothing but the grid is already full. This version of the game is a bit diffrent from the original because when you have for example a row with number { 2, 2, 2, 2 } and execudes a command left or right in that case you get the sum of the whole row: { 8, 0, 0, 0 } - for left, { 0, 0, 0, 8 } - for right. Another main diffrence from the original version is the addition of a number to the grid even if the last command from the user did not slide the grid. 
