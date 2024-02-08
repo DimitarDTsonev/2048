@@ -13,9 +13,7 @@ Game2048::Game2048() : max(0), score(0) {
 	randomNumber(2);
 }
 
-// That is the function that executes the game. 
-// The function first print the grid. 
-// After that there is a loop   
+// That is the function that executes the game. The function first print the grid. After that there is a loop   
 void Game2048::start() {
 	printAll();
 
@@ -42,10 +40,10 @@ void Game2048::start() {
 		case 77:
 			moveInDirection(0, 1);			// Moving RIGHT
 			break;
-		case 27:					// Stops the game
+		case 27:							// Stops the game
 			return;
 		default:
-		continue;					// Ignore invalid keys
+			continue;						// Ignore invalid keys
 		}
 
 		randomNumber(1);
@@ -84,10 +82,8 @@ void Game2048::printAll() const {
 	std::cout << std::setw(85) << "Max:" << max << "     " << "Score:" << score << std::endl;
 }
 
-// randomNumber() gets a parameter which is the count of the random numbers
-// to place on the free spaces on the grid. 
-// The function finds an empty space on the grid and add a number(2 or 4)
-// randomly generated
+// randomNumber gets a parameter which is the count of the random numbers to place on the free spaces on the grid. 
+// The function finds an empty space on the grid and add a number(2 or 4) randomly generated
 void Game2048::randomNumber(int countOfNumsToPlace) {
 	while (countOfNumsToPlace) {
 		short randRow = rand() % 4;
@@ -108,138 +104,66 @@ void Game2048::randomNumber(int countOfNumsToPlace) {
 	system("cls");
 }
 
-// The following four functions implements the movement of the numbers on the grid
-void Game2048::moveUp() {
-	for (int i = 0; i < GRID_SIZE; i++) {
-		for (int j = 0; j < GRID_SIZE; j++) {
-			if (visibility[j][i] == 1) {
-				for (int k = j - 1; k >= 0; k--) {
-					if (visibility[k][i] == 1) {
-						if (grid[k][i] == grid[k + 1][i]) {
-							grid[k][i] += grid[k][i];
-							grid[k + 1][i] = 0;
-							visibility[k + 1][i] = 0;
+// The funciton of the movement
+void Game2048::moveInDirection(int deltaRow, int deltaColumn) {
+	// Define the direction of movement based on deltaRow and deltaColumn
+	unsigned startRow = (deltaRow == 1) ? GRID_SIZE - 1 : 0,
+		startColumn = (deltaColumn == 1) ? GRID_SIZE - 1 : 0,
+		endRow = (deltaRow == 1) ? -1 : GRID_SIZE,
+		endColumn = (deltaColumn == 1) ? -1 : GRID_SIZE,
+		rowStep = (deltaRow == 1) ? -1 : 1,
+		columnStep = (deltaColumn == 1) ? -1 : 1;
 
-							max = std::max(max, grid[k][i]);
-							score += grid[k][i];
-						}
-					}
-					else {
-						int temp = grid[k][i];
-
-						grid[k][i] = grid[k + 1][i];
-						grid[k + 1][i] = temp;
-
-						visibility[k + 1][i] = 0;
-						visibility[k][i] = 1;
-					}
-				}
-			}
-		}
-	}
-}
-
-void Game2048::moveDown() {
-	for (int i = 0; i < GRID_SIZE; i++) {
-		for (int j = GRID_SIZE - 1; j >= 0; j--) {
-			if (visibility[j][i] == 1) {
-				for (int k = j + 1; k < GRID_SIZE; k++) {
-					if (visibility[k][i] == 1) {
-						if (grid[k][i] == grid[k - 1][i]) {
-							grid[k][i] += grid[k - 1][i];
-							grid[k - 1][i] = 0;
-							visibility[k - 1][i] = 0;
-
-							max = std::max(max, grid[k][i]);
-							score += grid[k][i];
-						}
-					}
-					else {
-						int temp = grid[k][i];
-
-						grid[k][i] = grid[k - 1][i];
-						grid[k - 1][i] = temp;
-
-						visibility[k - 1][i] = 0;
-						visibility[k][i] = 1;
-					}
-				}
-			}
-		}
-	}
-}
-
-void Game2048::moveLeft() {
-	for (int i = 0; i < GRID_SIZE; i++) {
-		for (int j = 0; j < GRID_SIZE; j++) {
+	// Iterate through the grid based on the direction of movement
+	for (int i = startRow; i != endRow; i += rowStep) {
+		for (int j = startColumn; j != endColumn; j += columnStep) {
 			if (visibility[i][j] == 1) {
-				for (int k = j - 1; k >= 0; k--) {
-					if (visibility[i][k] == 1) {
-						if (grid[i][k] == grid[i][k + 1]) {
-							grid[i][k] += grid[i][k + 1];
-							grid[i][k + 1] = 0;
-							visibility[i][k + 1] = 0;
+				// Find the farthest empty cell along the direction of movement
+				int newRow = i;
+				int newColumn = j;
 
-							max = std::max(max, grid[i][k]);
-							score += grid[i][k];
-						}
-					}
-					else {
-						int temp = grid[i][k];
+				while (isValidCell(newRow + deltaRow, newColumn + deltaColumn) && grid[newRow + deltaRow][newColumn + deltaColumn] == 0) {
+					newRow += deltaRow;
+					newColumn += deltaColumn;
+				}
 
-						grid[i][k] = grid[i][k + 1];
-						grid[i][k + 1] = temp;
+				// Move the value to the farthest empty cell
+				if (newRow != i || newColumn != j) {
+					grid[newRow][newColumn] = grid[i][j];
+					grid[i][j] = 0;
+					visibility[newRow][newColumn] = 1;
+					visibility[i][j] = 0;
+				}
 
-						visibility[i][k + 1] = 0;
-						visibility[i][k] = 1;
-					}
+				// Merge adjacent cells if their values are equal
+				if (isValidCell(newRow + deltaRow, newColumn + deltaColumn) && grid[newRow + deltaRow][newColumn + deltaColumn] == grid[newRow][newColumn]) {
+					grid[newRow + deltaRow][newColumn + deltaColumn] *= 2;
+					grid[newRow][newColumn] = 0;
+					visibility[newRow][newColumn] = 0;
+
+					max = std::max(max, grid[newRow + deltaRow][newColumn + deltaColumn]);
+					score += grid[newRow + deltaRow][newColumn + deltaColumn];
 				}
 			}
 		}
 	}
 }
 
-void Game2048::moveRight() {
-	for (int i = 0; i < GRID_SIZE; i++) {
-		for (int j = GRID_SIZE - 1; j >= 0; j--) {
-			if (visibility[i][j] == 1) {
-				for (int k = j + 1; k < GRID_SIZE; k++) {
-					if (visibility[i][k] == 1) {
-						if (grid[i][k] == grid[i][k - 1]) {
-							grid[i][k] += grid[i][k - 1];
-							grid[i][k - 1] = 0;
-							visibility[i][k - 1] = 0;
+// Helper functions see if cell is valid, to get is there more empty space on the grid and if the player have the number 2048
 
-							max = std::max(max, grid[i][k]);
-							score += grid[i][k];
-						}
-					}
-					else {
-						int temp = grid[i][k];
-
-						grid[i][k] = grid[i][k - 1];
-						grid[i][k - 1] = temp;
-
-						visibility[i][k - 1] = 0;
-						visibility[i][k] = 1;
-					}
-				}
-			}
-		}
-	}
+bool Game2048::isValidCell(int row, int column) const {
+	return row >= 0 && row < GRID_SIZE && column >= 0 && column < GRID_SIZE;
 }
 
-// Helper functions to get is there more empty space on the grid 
-// and if the player have the number 2048
 bool Game2048::isGameOver() const {
 	for (int i = 0; i < GRID_SIZE; i++) {
 		for (int j = 0; j < GRID_SIZE; j++) {
 			if (visibility[i][j] == 0) {
-				return false;			// Continue the game
+				return false;				// Continue the game
 			}
 		}
 	}
-	return true;						// Break the game
+	return true;							// Break the game
 }
 
 bool Game2048::getResult() const {
