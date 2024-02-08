@@ -23,15 +23,13 @@ private:
 
 	// Functionality:
 	void printAll() const;
-	void randomNumber(int countOfNumsToPlace);
+	void randomNumber(int);
 
 	// Moving the matrix: 
-	void moveUp();	
-	void moveDown();
-	void moveLeft();
-	void moveRight();
+	void moveInDirection(int, int);
 
 	// Checks:
+	bool isValidCell(int, int) const;
 	bool isGameOver() const;
 	bool getResult() const;
 };
