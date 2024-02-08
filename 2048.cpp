@@ -122,11 +122,6 @@ void Game2048::moveUp() {
 
 							max = std::max(max, grid[k][i]);
 							score += grid[k][i];
-
-							break;
-						}
-						else {
-							break;
 						}
 					}
 					else {
@@ -157,11 +152,6 @@ void Game2048::moveDown() {
 
 							max = std::max(max, grid[k][i]);
 							score += grid[k][i];
-
-							break;
-						}
-						else {
-							break;
 						}
 					}
 					else {
@@ -192,11 +182,6 @@ void Game2048::moveLeft() {
 
 							max = std::max(max, grid[i][k]);
 							score += grid[i][k];
-
-							break;
-						}
-						else {
-							break;
 						}
 					}
 					else {
@@ -227,11 +212,6 @@ void Game2048::moveRight() {
 
 							max = std::max(max, grid[i][k]);
 							score += grid[i][k];
-
-							break;
-						}
-						else {
-							break;
 						}
 					}
 					else {
