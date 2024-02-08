@@ -108,7 +108,7 @@ void Game2048::randomNumber(int countOfNumsToPlace) {
 	system("cls");
 }
 
-// The folling four functions implements the movement of the numbers on the grid
+// The following four functions implements the movement of the numbers on the grid
 void Game2048::moveUp() {
 	for (int i = 0; i < GRID_SIZE; i++) {
 		for (int j = 0; j < GRID_SIZE; j++) {
