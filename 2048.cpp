@@ -25,27 +25,27 @@ void Game2048::start() {
 		case 'w':
 		case 'W':
 		case 72:
-			moveUp();
+			moveInDirection(-1, 0);			// Moving UP
 			break;
 		case 's':
 		case 'S':
 		case 80:
-			moveDown();
+			moveInDirection(1, 0);			// Moving DOWN
 			break;
 		case 'a':
 		case 'A':
 		case 75:
-			moveLeft();
+			moveInDirection(0, -1);			// Moving LEFT
 			break;
 		case 'd':
 		case 'D':
 		case 77:
-			moveRight();
+			moveInDirection(0, 1);			// Moving RIGHT
 			break;
-		case 27:		// Stops the game
+		case 27:					// Stops the game
 			return;
-		default:		
-			continue;	// Ignore invalid keys
+		default:
+		continue;					// Ignore invalid keys
 		}
 
 		randomNumber(1);
