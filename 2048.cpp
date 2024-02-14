@@ -40,10 +40,10 @@ void Game2048::start() {
 		case 77:
 			moveInDirection(0, 1);			// Moving RIGHT
 			break;
-		case 27:							// Stops the game
+		case 27:					// Stops the game using escape key
 			return;
 		default:
-			continue;						// Ignore invalid keys
+			continue;				// Ignore invalid keys
 		}
 
 		randomNumber(1);
